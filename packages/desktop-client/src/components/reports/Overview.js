@@ -13,8 +13,10 @@ import Container from './Container';
 import Tooltip from './Tooltip';
 import useReport from './useReport';
 import netWorthSpreadsheet from './graphs/net-worth-spreadsheet';
+import categorySummarySpreadsheet from './graphs/category-summary-spreadsheet';
 import { simpleCashFlow } from './graphs/cash-flow-spreadsheet';
 import NetWorthGraph from './graphs/NetWorthGraph';
+import CategorySummaryGraph from './graphs/CategorySummaryGraph';
 import Change from './Change';
 import DateRange from './DateRange';
 
@@ -95,6 +97,56 @@ function NetWorthCard({ accounts }) {
         </View>
 
         <NetWorthGraph
+          start={start}
+          end={end}
+          graphData={data.graphData}
+          compact={true}
+          style={{ height: 'auto', flex: 1 }}
+        />
+      </View>
+    </Card>
+  );
+}
+
+function CategorySummaryCard({ accounts }) {
+  const end = monthUtils.currentMonth();
+  const start = monthUtils.subMonths(end, 5);
+
+  const data = useReport(
+    'category_summary',
+    useArgsMemo(categorySummarySpreadsheet)(start, end, accounts)
+  );
+
+  if (!data) {
+    return null;
+  }
+
+  return (
+    <Card flex={2} to="/reports/category-summary">
+      <View style={{ flex: 1 }}>
+        <View style={{ flexDirection: 'row', padding: 20 }}>
+          <View style={{ flex: 1 }}>
+            <Block
+              style={[styles.mediumText, { fontWeight: 500, marginBottom: 5 }]}
+            >
+              Net Worth
+            </Block>
+            <DateRange start={start} end={end} />
+          </View>
+          <View style={{ textAlign: 'right' }}>
+            <Block
+              style={[styles.mediumText, { fontWeight: 500, marginBottom: 5 }]}
+            >
+              {integerToCurrency(data.netWorth)}
+            </Block>
+            <Change
+              amount={data.totalChange}
+              style={{ color: colors.n6, fontWeight: 300 }}
+            />
+          </View>
+        </View>
+
+        <CategorySummaryGraph
           start={start}
           end={end}
           graphData={data.graphData}
@@ -231,6 +283,14 @@ function Overview({ accounts }) {
       >
         <NetWorthCard accounts={accounts} />
         <CashFlowCard />
+      </View>
+      <View
+        style={{
+          flexDirection: 'row',
+          flex: '0 0 auto'
+        }}
+      >
+        <CategorySummaryCard accounts={accounts} />
       </View>
 
       <View
