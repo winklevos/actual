@@ -20,3 +20,11 @@ bundle.mobile.js.map
 export-2020-01-10.csv
 
 **/*.log
+
+.pnp.*
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/sdks
+!.yarn/versions

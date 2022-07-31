@@ -9,7 +9,7 @@
     "android:prod": "rm -f ./android/app/build/generated/assets/react/release/index.android.bundle && npx react-native run-android --appId com.shiftreset.actual --variant=release",
     "ios": "react-native run-ios",
     "test": "jest",
-    "postinstall": "patch-package"
+    "prepare": "patch-package"
   },
   "jest": {
     "preset": "react-native"

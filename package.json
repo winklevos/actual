@@ -46,7 +46,7 @@
     "start:desktop-node": "cd packages/loot-core && yarn watch:node",
     "start:desktop-client": "cd packages/desktop-client && yarn watch",
     "start:desktop-electron": "cd packages/desktop-electron && yarn watch",
-    "start:browser": "npm-run-all --parallel start:browser-*",
+    "start:browser": "npm-run-all --parallel start:browser-backend start:browser-frontend",
     "start:browser-backend": "cd packages/loot-core && yarn watch:browser",
     "start:browser-frontend": "cd packages/desktop-client && yarn start:browser",
     "test": "./node_modules/.bin/jest --maxWorkers=4",
@@ -55,7 +55,8 @@
     "rebuild-electron": "./node_modules/.bin/electron-rebuild -f -m ./packages/loot-core",
     "rebuild-node": "cd packages/loot-core && npm rebuild",
     "lint": "cd packages/loot-core && yarn lint",
-    "postinstall": "rm -rf ./packages/loot-design/node_modules/react && rm -rf ./packages/mobile/node_modules/react && rm -rf ./node_modules/react-native && patch-package"
+    "prepare": "patch-package",
+    "postinstall": "rm -rf ./packages/loot-design/node_modules/react && rm -rf ./packages/mobile/node_modules/react && rm -rf ./node_modules/react-native"
   },
   "devDependencies": {
     "@babel/plugin-transform-modules-commonjs": "^7.18.2",
