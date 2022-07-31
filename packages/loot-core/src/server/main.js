@@ -2,6 +2,7 @@ import './polyfills';
 import { differenceInDays } from 'date-fns';
 import asyncStorage from '../platform/server/asyncStorage';
 import { captureException, captureBreadcrumb } from '../platform/exceptions';
+import {session} from './selenium';
 import * as prefs from './prefs';
 import fs from '../platform/server/fs';
 import * as sqlite from '../platform/server/sqlite';
@@ -76,6 +77,8 @@ const { resolveName, unresolveName } = require('./spreadsheet/util');
 const SyncPb = require('./sync/proto/sync_pb');
 
 // let indexeddb = require('../platform/server/indexeddb');
+
+const dd = sel
 
 let VERSION;
 let DEMO_BUDGET_ID = '_demo-budget';
