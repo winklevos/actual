@@ -74,6 +74,7 @@ export async function addTransfer(transaction, transferredAccount) {
     payee: fromPayee,
     date: transaction.date,
     transfer_id: transaction.id,
+    currency: transaction.currency,
     notes: transaction.notes || null,
     cleared: false
   });
@@ -117,6 +118,7 @@ export async function updateTransfer(transaction, transferredAccount) {
     payee: payee.id,
     date: transaction.date,
     notes: transaction.notes,
+    currency: transaction.currency,
     amount: -transaction.amount
   });
 

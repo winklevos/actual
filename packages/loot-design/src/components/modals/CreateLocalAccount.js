@@ -16,6 +16,19 @@ import {
 } from '../common';
 import { Formik } from 'formik';
 
+const currencies = require('./../../../../loot-core/src/server/currencies/currencies.json');
+
+var cList = [];
+for(var i in currencies)
+  cList.push([i, currencies [i]]);
+
+const currenciesList = cList.length > 0
+    	&& cList.map((item, i) => {
+      return (
+        <option key={i} value={item[0]}>{item[1].name} ({item[0]})</option>
+      )
+    }, this);
+
 function CreateLocalAccount({ modalProps, actions, history }) {
   return (
     <Modal title="Create Local Account" {...modalProps} showBack={false}>
@@ -26,7 +39,8 @@ function CreateLocalAccount({ modalProps, actions, history }) {
             initialValues={{
               name: '',
               type: 'checking',
-              balance: '0'
+              balance: '0',
+              currency: ''
             }}
             validate={() => ({})}
             onSubmit={async (values, { setErrors }) => {
@@ -48,7 +62,8 @@ function CreateLocalAccount({ modalProps, actions, history }) {
                   values.name,
                   values.type,
                   toRelaxedNumber(values.balance),
-                  values.offbudget
+                  values.offbudget,
+                  values.currency
                 );
                 history.push('/accounts/' + id);
               }
@@ -140,6 +155,23 @@ function CreateLocalAccount({ modalProps, actions, history }) {
                 {errors.balance && (
                   <FormError style={{ marginLeft: 75 }}>
                     Balance must be a number
+                  </FormError>
+                )}
+
+
+                <InlineField label="Currency" width="75%">
+                  <Select
+                    name="currency"
+                    value={values.currency}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                  >
+                    {currenciesList}
+                  </Select>
+                </InlineField>
+                {errors.currency && (
+                  <FormError style={{ marginLeft: 75 }}>
+                    Currency is required
                   </FormError>
                 )}
 

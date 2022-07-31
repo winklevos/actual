@@ -42,6 +42,7 @@ CREATE TABLE transactions
    acct TEXT,
    category TEXT,
    amount INTEGER,
+   currency TEXT,
    description TEXT,
    notes TEXT,
    date INTEGER,
@@ -86,3 +87,22 @@ CREATE TABLE messages_clock (id INTEGER PRIMARY KEY, clock TEXT);
 
 CREATE TABLE db_version (version TEXT PRIMARY KEY);
 CREATE TABLE __migrations__ (id INT PRIMARY KEY NOT NULL);
+
+
+CREATE TABLE currencies (
+  id TEXT PRIMARY KEY,
+  code TEXT UNIQUE,
+  symbol TEXT,
+  symbol_native TEXT,
+  decimal_digits INTEGER DEFAULT 2,
+  rounding INTEGER DEFAULT 0,
+  name_plural TEXT
+)
+
+CREATE TABLE countries (
+  id TEXT PRIMARY KEY,
+  name TEXT UNIQUE,
+  iso3 TEXT,
+  iso_numeric TEXT,
+  currency TEXT
+)

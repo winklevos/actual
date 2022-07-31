@@ -131,7 +131,18 @@ function EditField({
         />
       );
       break;
-
+    
+      case 'currency':
+        label = 'Currency';
+        editor = (
+          <Input
+            focused={true}
+            onEnter={e => onSelect(e.target.value)}
+            style={inputStyle}
+          />
+        );
+        break;
+        
     case 'amount':
       label = 'Amount';
       editor = (

@@ -601,6 +601,14 @@ export class TransactionEdit extends React.Component {
                   this.onQueueChange(transaction, 'notes', e.nativeEvent.text)
                 }
               />
+              <FieldLabel title="Currency" />
+              <InputField
+                defaultValue={transaction.currency}
+                onUpdate={value => this.onEdit(transaction, 'currency', value)}
+                onChange={e =>
+                  this.onQueueChange(transaction, 'currency', e.nativeEvent.text)
+                }
+              />
 
               {!adding && (
                 <View style={{ alignItems: 'center' }}>
@@ -757,6 +765,7 @@ export class Transaction extends React.PureComponent {
       cleared,
       is_parent,
       notes,
+      currency,
       schedule
     } = transaction;
     let categoryName = category ? lookupName(categories, category) : null;

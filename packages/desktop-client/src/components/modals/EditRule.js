@@ -275,6 +275,7 @@ let actionFields = [
   'notes',
   'date',
   'amount',
+  'currency',
   'category',
   'account'
 ].map(field => [field, mapField(field)]);
@@ -538,6 +539,7 @@ let conditionFields = [
   'category',
   'date',
   'notes',
+  'currency',
   'amount'
 ]
   .map(field => [field, mapField(field)])

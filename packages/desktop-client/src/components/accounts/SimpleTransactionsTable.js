@@ -129,6 +129,12 @@ const TransactionRow = React.memo(function TransactionRow({
                 {transaction.notes}
               </Field>
             );
+          case 'currency':
+            return (
+              <Field key={i} width="flex" title={transaction.currency}>
+                {transaction.currency}
+              </Field>
+            );
           case 'amount':
             return (
               <Field
@@ -150,7 +156,7 @@ const TransactionRow = React.memo(function TransactionRow({
 export default function SimpleTransactionsTable({
   transactions,
   schedules,
-  fields = ['date', 'payee', 'amount'],
+  fields = ['date', 'payee', 'amount', 'currency'],
   style
 }) {
   let { payees, categories, accounts, dateFormat } = useSelector(state => {
@@ -234,6 +240,12 @@ export default function SimpleTransactionsTable({
                 return (
                   <Field key={i} width="flex">
                     Notes
+                  </Field>
+                );
+              case 'currency':
+                return (
+                  <Field key={i} width="flex">
+                    Currency
                   </Field>
                 );
               case 'amount':

@@ -31,6 +31,7 @@ export const FIELD_TYPES = new Map(
     payee: 'id',
     date: 'date',
     notes: 'string',
+    currency: 'string',
     amount: 'number',
     amountInflow: 'number',
     amountOutfow: 'number',

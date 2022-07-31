@@ -11,6 +11,7 @@ transactions = transactions.map(trans => ({
   amount: trans.amount,
   date: trans.date,
   payee: trans.description,
+  currency: trans.currency,
   imported_payee: trans.description,
   notes: trans.notes
 }));

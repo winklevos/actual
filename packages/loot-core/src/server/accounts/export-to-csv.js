@@ -31,11 +31,12 @@ export async function exportToCSV(
   }, {});
 
   const transactionsForExport = transactions.map(
-    ({ account, date, payee, notes, category, amount }) => ({
+    ({ account, date, payee, notes, category, currency, amount }) => ({
       Account: accountNamesById[account],
       Date: date,
       Payee: payeeNamesById[payee],
       Notes: notes,
+      Currency: currency,
       Category: categoryNamesById[category],
       Amount: amount == null ? 0 : integerToAmount(amount)
     })
@@ -55,6 +56,7 @@ export async function exportQueryToCSV(query) {
         { ParentId: 'parent_id' },
         { IsParent: 'is_parent' },
         { Notes: 'notes' },
+        { Currency: 'currency' },
         { Category: 'category.name' },
         { Amount: 'amount' }
       ])
@@ -78,6 +80,7 @@ export async function exportQueryToCSV(query) {
       Date: trans.Date,
       Payee: trans.ParentId ? parentsPayees.get(trans.ParentId) : trans.Payee,
       Notes: trans.Notes,
+      Currency: trans.currency,
       Category: trans.Category,
       Amount: trans.Amount == null ? 0 : integerToAmount(trans.Amount)
     };

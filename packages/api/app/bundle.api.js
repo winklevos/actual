@@ -41302,6 +41302,16 @@ async function importTransactions(data, entityIdMap) {
     return entityIdMap.get(id);
   }
 
+  function getAcctCurrency(acctId){
+    let acct = accounts.find(acct => acct.id === acctId);
+
+    if (!acct) {
+      throw new Error('Could not find account for transaction when importing');
+    }
+
+    return acct.currency;
+  }
+
   function isOffBudget(acctId) {
     let acct = accounts.find(acct => acct.id === acctId);
 
@@ -41340,6 +41350,7 @@ async function importTransactions(data, entityIdMap) {
       let newTransaction = {
         id,
         amount: amountToInteger(transaction.amount),
+        currency: getAcctCurrency(accountId),
         category: isOffBudget(entityIdMap.get(accountId)) ? null : getCategory(transaction.categoryId),
         date: transaction.date,
         notes: transaction.memo || null,
@@ -45973,6 +45984,8 @@ async function exportQueryToCSV(query) {
     IsParent: 'is_parent'
   }, {
     Notes: 'notes'
+  },{
+    Currency: 'currency'
   }, {
     Category: 'category.name'
   }, {
@@ -49199,6 +49212,9 @@ const transactionModel = _objectSpread(_objectSpread({}, _models__WEBPACK_IMPORT
 
     if ('notes' in transaction) {
       result.notes = transaction.notes;
+    }
+    if ('currency' in transaction) {
+      result.currency = transaction.currency;
     }
 
     if ('imported_id' in transaction) {

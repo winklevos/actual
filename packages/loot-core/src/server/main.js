@@ -75,7 +75,10 @@ const connection = require('../platform/server/connection');
 const { resolveName, unresolveName } = require('./spreadsheet/util');
 const SyncPb = require('./sync/proto/sync_pb');
 
+
+const currencies = require('./currencies/currencies.json');
 // let indexeddb = require('../platform/server/indexeddb');
+console.log(currencies);
 
 let VERSION;
 let DEMO_BUDGET_ID = '_demo-budget';

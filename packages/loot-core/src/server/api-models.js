@@ -64,6 +64,9 @@ export const transactionModel = {
     if ('notes' in transaction) {
       result.notes = transaction.notes;
     }
+    if ('currency' in transaction) {
+      result.currency = transaction.currency;
+    }
     if ('imported_id' in transaction) {
       result.financial_id = transaction.imported_id;
     }

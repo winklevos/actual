@@ -77,6 +77,7 @@ async function parseQIF(filepath) {
       date: trans.date,
       payee_name: trans.payee,
       imported_payee: trans.payee,
+      currency: trans.currency,
       notes: trans.memo || null
     }))
   };
@@ -110,6 +111,7 @@ async function parseOFX(filepath) {
       date: trans.date ? dayFromDate(trans.date * 1000) : null,
       payee_name: trans.name,
       imported_payee: trans.name,
+      currency: trans.currency,
       notes: trans.memo || null
     }))
   };

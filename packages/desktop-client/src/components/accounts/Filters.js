@@ -38,6 +38,7 @@ import { styles, colors } from 'loot-design/src/style';
 let filterFields = [
   'date',
   'account',
+  'currency',
   'payee',
   'notes',
   'category',

@@ -278,6 +278,9 @@ function Transaction({
       <Field width="flex" borderColor={colors.border} title={transaction.notes}>
         {transaction.notes}
       </Field>
+      <Field width="flex" borderColor={colors.border} title={transaction.currency}>
+        {transaction.currency}
+      </Field>
       {splitMode ? (
         <>
           <Field
@@ -459,6 +462,16 @@ function FieldMappings({ transactions, mappings, onChange, splitMode }) {
             value={mappings.notes || ''}
             style={{ marginRight: 5 }}
             onChange={name => onChange('notes', name)}
+          />
+        </View>
+        <View style={{ flex: 1 }}>
+          <SubLabel title="Currency" />
+          <SelectField
+            width="flex"
+            options={options}
+            value={mappings.currency || ''}
+            style={{ marginRight: 5 }}
+            onChange={name => onChange('currency', name)}
           />
         </View>
         {splitMode ? (

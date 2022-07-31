@@ -610,6 +610,7 @@ export const Transaction = React.memo(function Transaction(props) {
     payee: payeeId,
     imported_payee: importedPayee,
     notes,
+    currency,
     date,
     account: accountId,
     category,
@@ -992,6 +993,24 @@ export const Transaction = React.memo(function Transaction(props) {
           )}
         </CustomCell>
       )}
+
+      <InputCell
+        type="input"
+        width={80}
+        name="currency"
+        exposed={focusedField === 'currency'}
+        focused={focusedField === 'currency'}
+        value={currency == null ? '' : currency}
+        valueStyle={valueStyle}
+        textAlign="right"
+        title={debit}
+        onExpose={!isPreview && (name => onEdit(id, name))}
+        style={[isParent && { fontStyle: 'italic' }, styles.tnum]}
+        inputProps={{
+          value: currency,
+          onUpdate: onUpdate.bind(null, 'currency')
+        }}
+      />
 
       <InputCell
         type="input"
@@ -1581,6 +1600,7 @@ export let TransactionTable = React.forwardRef((props, ref) => {
       'account',
       'payee',
       'notes',
+      'currency',
       'category',
       'debit',
       'credit',
@@ -1588,7 +1608,7 @@ export let TransactionTable = React.forwardRef((props, ref) => {
     ];
 
     fields = item.is_child
-      ? ['select', 'payee', 'notes', 'category', 'debit', 'credit']
+      ? ['select', 'payee', 'notes', 'category', 'debit', 'credit', 'currency']
       : fields.filter(
           f =>
             (props.showAccount || f !== 'account') &&

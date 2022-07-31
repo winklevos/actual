@@ -55,6 +55,7 @@ function _generateTransaction(data) {
     id: id,
     amount: data.amount || (Math.random() * 10000 - 7000) | 0,
     payee: data.payee || (Math.random() < 0.9 ? 'payed-to' : 'guy'),
+    currency: 'USD',
     notes:
       Math.random() < 0.1 ? 'A really long note that should overflow' : 'Notes',
     account: data.account,
@@ -80,6 +81,7 @@ export function generateTransaction(data, splitAmount, showError = false) {
       {
         id: parent.id + '/' + uuid.v4Sync(),
         amount: trans.amount - splitAmount,
+        currency: 'USD',
         account: parent.account,
         date: parent.date,
         notes: null,
@@ -89,6 +91,7 @@ export function generateTransaction(data, splitAmount, showError = false) {
       {
         id: parent.id + '/' + uuid.v4Sync(),
         amount: splitAmount,
+        currency: 'USD',
         account: parent.account,
         date: parent.date,
         notes: null,
