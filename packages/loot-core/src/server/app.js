@@ -1,5 +1,6 @@
 import mitt from 'mitt';
 import { captureException } from '../platform/exceptions';
+import "reflect-metadata"
 
 // This is a simple helper abstraction for defining methods exposed to
 // the client. It doesn't do much, but checks for naming conflicts and

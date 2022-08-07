@@ -67,6 +67,49 @@ import schedulesApp from './schedules/app';
 import budgetApp from './budget/app';
 import notesApp from './notes/app';
 import toolsApp from './tools/app';
+// import './index'
+
+
+var typeorm = require("typeorm")
+
+var dataSource = new typeorm.DataSource({
+    type: "sqlite",
+    synchronize: true,
+    logging: true,
+    entities: [require("./entity/Bank")],
+})
+
+dataSource
+    .initialize()
+    .then(function () {
+        // var category1 = {
+        //     name: "TypeScript",
+        // }
+        // var category2 = {
+        //     name: "Programming",
+        // }
+
+        var bank = {
+            name: "tests",
+            active: true       }
+
+        var postRepository = dataSource.getRepository("Bank")
+        postRepository
+            .save(bank)
+            .then(function (savedBank) {
+                console.log("Bank has been saved: ", savedBank)
+                console.log("Now lets load all posts: ")
+
+                return postRepository.find()
+            })
+            .then(function (allBanks) {
+                console.log("All posts: ", allBanks)
+            })
+    })
+    .catch(function (error) {
+        console.log("Error: ", error)
+    })
+
 
 const YNAB4 = require('@actual-app/import-ynab4/importer');
 const YNAB5 = require('@actual-app/import-ynab5/importer');
