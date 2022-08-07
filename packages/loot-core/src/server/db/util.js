@@ -26,7 +26,7 @@ export async function incrFetch(
 }
 
 export function whereIn(ids, field) {
-  let dedupedIds = [...new Set(ids)];
-  let filter = `${field} IN (` + dedupedIds.map(id => `'${id}'`).join(',') + ')';
+  let ids2 = [...new Set(ids)];
+  let filter = `${field} IN (` + ids2.map(id => `'${id}'`).join(',') + ')';
   return filter;
 }

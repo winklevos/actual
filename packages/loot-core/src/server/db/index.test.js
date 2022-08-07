@@ -1,18 +1,16 @@
-import { insertAccount } from "./accounts";
-import { insertCategory, insertCategoryGroup } from "./categories";
-import { getTransactions, deleteTransaction, insertTransaction} from "./transactions";
+import * as db from './index';
 
 beforeEach(global.emptyDatabase());
 
 async function insertTransactions(transactions) {
-  await insertAccount({ id: 'foo', name: 'bar' });
+  await db.insertAccount({ id: 'foo', name: 'bar' });
   return Promise.all(
-    transactions.map(transaction => insertTransaction(transaction))
+    transactions.map(transaction => db.insertTransaction(transaction))
   );
 }
 
-async function getTransactionsSanitized(latestDate) {
-  const rows = await getTransactions('foo');
+async function getTransactions(latestDate) {
+  const rows = await db.getTransactions('foo');
   return rows
     .filter(t => t.date <= latestDate)
     .map(row => ({
@@ -31,6 +29,15 @@ async function getTransactionsSanitized(latestDate) {
 // validated in the same event loop and it's same to not await)
 
 describe('Database', () => {
+  test('inserting a category works', async () => {
+    await db.insertCategoryGroup({ id: 'group1', name: 'group1' });
+    await db.insertCategory({
+      name: 'foo',
+      cat_group: 'group1'
+    });
+    expect((await db.getCategories()).length).toBe(1);
+  });
+
   test('transactions are sorted by date', async () => {
     await insertTransactions([
       { date: '2018-01-05', account: 'foo', amount: -23 },
@@ -39,7 +46,7 @@ describe('Database', () => {
       { date: '2018-01-01', account: 'foo', amount: 2 },
       { date: '2018-01-03', account: 'foo', amount: -5 }
     ]);
-    expect(await getTransactionsSanitized('2018-01-05')).toMatchSnapshot();
+    expect(await getTransactions('2018-01-05')).toMatchSnapshot();
   });
 
   test('transactions are sorted by starting balance flag', async () => {
@@ -57,7 +64,7 @@ describe('Database', () => {
       { date: '2018-01-03', account: 'foo', amount: -25 },
       { date: '2018-01-03', account: 'foo', amount: -5 }
     ]);
-    expect(await getTransactionsSanitized('2018-01-05')).toMatchSnapshot();
+    expect(await getTransactions('2018-01-05')).toMatchSnapshot();
   });
 
   test('transactions are sorted by sort order', async () => {
@@ -69,7 +76,7 @@ describe('Database', () => {
       { date: '2018-01-03', account: 'foo', amount: 2, sort_order: 4 },
       { date: '2018-01-03', account: 'foo', amount: -5, sort_order: 1 }
     ]);
-    expect(await getTransactionsSanitized('2018-01-05')).toMatchSnapshot();
+    expect(await getTransactions('2018-01-05')).toMatchSnapshot();
   });
 
   test('transactions are sorted by id as a last resort', async () => {
@@ -98,7 +105,7 @@ describe('Database', () => {
         sort_order: 4
       }
     ]);
-    expect(await getTransactionsSanitized('2018-01-05')).toMatchSnapshot();
+    expect(await getTransactions('2018-01-05')).toMatchSnapshot();
   });
 
   test('transactions get child transactions in the right order', async () => {
@@ -141,7 +148,7 @@ describe('Database', () => {
         parent_id: 'foo'
       }
     ]);
-    expect(await getTransactionsSanitized('2018-01-05')).toMatchSnapshot();
+    expect(await getTransactions('2018-01-05')).toMatchSnapshot();
   });
 
   test("transactions don't show orphaned child transactions", async () => {
@@ -172,17 +179,17 @@ describe('Database', () => {
         is_child: true
       }
     ]);
-    expect(await getTransactionsSanitized('2018-01-05')).toMatchSnapshot();
+    expect(await getTransactions('2018-01-05')).toMatchSnapshot();
   });
 
   test('parent transactions never have a category', async () => {
-    await insertCategoryGroup({ id: 'group1', name: 'group1' });
-    await insertCategory({
+    await db.insertCategoryGroup({ id: 'group1', name: 'group1' });
+    await db.insertCategory({
       id: 'cat1',
       name: 'cat1',
       cat_group: 'group1'
     });
-    await insertCategory({
+    await db.insertCategory({
       id: 'cat2',
       name: 'cat2',
       cat_group: 'group1'
@@ -221,7 +228,7 @@ describe('Database', () => {
       }
     ]);
 
-    const rows = await getTransactions('foo');
+    const rows = await db.getTransactions('foo');
 
     expect(rows.find(t => t.id === 'parent1').category).toBe(null);
     expect(rows.find(t => t.id === 'child3').category).toBe('cat1');
@@ -268,9 +275,9 @@ describe('Database', () => {
       }
     ]);
 
-    await deleteTransaction({ id: 'parent1' });
+    await db.deleteTransaction({ id: 'parent1' });
 
-    const rows = await getTransactions('foo');
+    const rows = await db.getTransactions('foo');
     expect(rows.length).toBe(1);
     expect(rows[0].id).toBe('trans1');
   });
