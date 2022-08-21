@@ -9,6 +9,7 @@ import React, {
   useContext,
   useReducer
 } from 'react';
+import { send } from 'loot-core/src/platform/client/fetch';
 import { useSelector, useDispatch } from 'react-redux';
 import {
   format as formatDate,
@@ -343,12 +344,12 @@ function StatusCell({
       status === 'cleared'
         ? colors.g5
         : status === 'missed'
-        ? colors.r6
-        : status === 'due'
-        ? colors.y5
-        : selected
-        ? colors.b7
-        : colors.n6
+          ? colors.r6
+          : status === 'due'
+            ? colors.y5
+            : selected
+              ? colors.b7
+              : colors.n6
   };
 
   function onSelect() {
@@ -566,6 +567,42 @@ export const Transaction = React.memo(function Transaction(props) {
       let newTransaction = { ...transaction, [name]: value };
 
       if (
+        name === 'category'
+      ) {
+        console.log(`category changed to ${value}`);
+        // let rule = {
+        //   stage: null,
+        //   conditions: [{ op: 'is', field: 'payee', value: null, type: 'id' }],
+        //   actions: [{ op: 'set', field: 'category', value: null, type: 'id' }]
+        // }
+
+        const rule = {
+          stage: null,
+          conditions: [{ op: 'is', field: 'payee', value: newTransaction['payee'], type: 'id' }],
+          actions: [{ op: 'set', field: 'category', value: value, type: 'id' }]
+        };
+
+        console.log(newTransaction['payee']);
+
+        send('payees-get-rules', { id: newTransaction['payee'] })
+          .then(
+            (result) => {
+
+              console.log(result);
+
+              if (result.length > 0) {
+                console.log('existing rules');
+
+              } else {
+                // let method = rule.id ? 'rule-update' : 'rule-add';
+                let { error, id: newId } = send('rule-add', rule);
+              }
+
+            }
+          );
+      }
+
+      if (
         name === 'account' &&
         value &&
         getAccountsById(accounts)[value].offbudget
@@ -641,10 +678,10 @@ export const Transaction = React.memo(function Transaction(props) {
         selected
           ? colors.selected
           : backgroundFocus
-          ? colors.hover
-          : isPreview
-          ? '#fcfcfc'
-          : backgroundColor
+            ? colors.hover
+            : isPreview
+              ? '#fcfcfc'
+              : backgroundColor
       }
       highlighted={highlighted}
       style={[
@@ -842,18 +879,18 @@ export const Transaction = React.memo(function Transaction(props) {
                   notes === 'missed'
                     ? colors.r6
                     : notes === 'due'
-                    ? colors.y4
-                    : selected
-                    ? colors.b5
-                    : colors.n6,
+                      ? colors.y4
+                      : selected
+                        ? colors.b5
+                        : colors.n6,
                 backgroundColor:
                   notes === 'missed'
                     ? colors.r10
                     : notes === 'due'
-                    ? colors.y9
-                    : selected
-                    ? colors.b8
-                    : colors.n10,
+                      ? colors.y9
+                      : selected
+                        ? colors.b8
+                        : colors.n10,
                 margin: '0 5px',
                 padding: '3px 7px',
                 borderRadius: 4
@@ -924,10 +961,10 @@ export const Transaction = React.memo(function Transaction(props) {
             isParent
               ? 'Split'
               : isOffBudget
-              ? 'Off Budget'
-              : isBudgetTransfer
-              ? 'Transfer'
-              : ''
+                ? 'Off Budget'
+                : isBudgetTransfer
+                  ? 'Transfer'
+                  : ''
           }
           valueStyle={valueStyle}
           style={{ fontStyle: 'italic', color: '#c0c0c0', fontWeight: 300 }}
@@ -944,22 +981,22 @@ export const Transaction = React.memo(function Transaction(props) {
           formatter={value =>
             value
               ? getDisplayValue(
-                  getCategoriesById(categoryGroups)[value],
-                  'name'
-                )
+                getCategoriesById(categoryGroups)[value],
+                'name'
+              )
               : transaction.id
-              ? 'Categorize'
-              : ''
+                ? 'Categorize'
+                : ''
           }
           exposed={focusedField === 'category'}
           onExpose={name => onEdit(id, name)}
           valueStyle={
             !category
               ? {
-                  fontStyle: 'italic',
-                  fontWeight: 300,
-                  color: colors.p8
-                }
+                fontStyle: 'italic',
+                fontWeight: 300,
+                color: colors.p8
+              }
               : valueStyle
           }
           onUpdate={async value => {
@@ -1590,10 +1627,10 @@ export let TransactionTable = React.forwardRef((props, ref) => {
     fields = item.is_child
       ? ['select', 'payee', 'notes', 'category', 'debit', 'credit']
       : fields.filter(
-          f =>
-            (props.showAccount || f !== 'account') &&
-            (props.showCategory || f !== 'category')
-        );
+        f =>
+          (props.showAccount || f !== 'account') &&
+          (props.showCategory || f !== 'category')
+      );
 
     if (isPreviewId(item.id)) {
       fields = ['select', 'cleared'];
