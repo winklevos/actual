@@ -25,6 +25,15 @@ import {
   Tooltip,
   Button
 } from 'loot-design/src/components/common';
+import {
+  // Condition,
+  // Action,
+  // Rule,
+  // RuleIndexer,
+  // rankRules,
+  // migrateIds,
+  iterateIds
+} from 'loot-core/src/server/accounts/rules';
 import CategoryAutocomplete from 'loot-design/src/components/CategorySelect';
 import PayeeAutocomplete from 'loot-design/src/components/PayeeAutocomplete';
 import AccountAutocomplete from 'loot-design/src/components/AccountAutocomplete';
@@ -570,11 +579,6 @@ export const Transaction = React.memo(function Transaction(props) {
         name === 'category'
       ) {
         console.log(`category changed to ${value}`);
-        // let rule = {
-        //   stage: null,
-        //   conditions: [{ op: 'is', field: 'payee', value: null, type: 'id' }],
-        //   actions: [{ op: 'set', field: 'category', value: null, type: 'id' }]
-        // }
 
         const rule = {
           stage: null,
@@ -588,15 +592,49 @@ export const Transaction = React.memo(function Transaction(props) {
           .then(
             (result) => {
 
-              console.log(result);
+              // console.log(result);
 
               if (result.length > 0) {
-                console.log('existing rules');
+                // // check for matching rule exactly
+                // if(result.find(item => item === rule)){
+                //   console.log('matching rule exists');
+                //   return;
+                // }
 
-              } else {
-                // let method = rule.id ? 'rule-update' : 'rule-add';
-                let { error, id: newId } = send('rule-add', rule);
+                // get any rules that set the same category
+                let rules = new Set();
+
+                iterateIds(result, 'category', (rule, id) => {
+                  if (id === value) {
+                    rules.add(rule);
+                  }
+                });
+                // return if there is a rule that sets the selected category
+                if (rules.size > 0) {
+                  console.log('already set by a rule');
+                  console.log(rules);
+                  return;
+                }
+
+                // check if a rule sets another category, to prompt for update
+                result.forEach((item) => {
+                  console.log(item);
+
+                  const filterDoe = item.conditions.filter(condition => condition.op === 'set' && condition.field === 'category');
+
+                  if (filterDoe.length > 0) {
+                    console.log('other category set by rule');
+                    console.log(filterDoe);
+                  }
+
+                });
+
               }
+
+
+              // let method = rule.id ? 'rule-update' : 'rule-add';
+              let { error, id: newId } = send('rule-add', rule);
+
 
             }
           );
