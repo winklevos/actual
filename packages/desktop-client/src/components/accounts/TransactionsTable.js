@@ -595,12 +595,6 @@ export const Transaction = React.memo(function Transaction(props) {
               console.log(result);
 
               if (result.length > 0) {
-                // // check for matching rule exactly
-                // if(result.find(item => item === rule)){
-                //   console.log('matching rule exists');
-                //   return;
-                // }
-
                 // get any rules that set the same category
                 let rules = new Set();
 
