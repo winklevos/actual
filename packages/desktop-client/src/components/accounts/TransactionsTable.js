@@ -592,7 +592,7 @@ export const Transaction = React.memo(function Transaction(props) {
           .then(
             (result) => {
 
-              // console.log(result);
+              console.log(result);
 
               if (result.length > 0) {
                 // // check for matching rule exactly
@@ -620,11 +620,16 @@ export const Transaction = React.memo(function Transaction(props) {
                 result.forEach((item) => {
                   console.log(item);
 
-                  const filterDoe = item.conditions.filter(condition => condition.op === 'set' && condition.field === 'category');
+                  const filterDoe = item.actions.filter(action => action.op === 'set' && action.field === 'category');
 
                   if (filterDoe.length > 0) {
                     console.log('other category set by rule');
                     console.log(filterDoe);
+                    // if only 1 prompt to open edit rule
+
+                    //if > 1 prompt to open manage rules filtered to the rules
+
+                    return;
                   }
 
                 });
