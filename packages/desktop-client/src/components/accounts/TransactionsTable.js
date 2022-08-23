@@ -90,6 +90,9 @@ import { getStatusProps } from '../schedules/StatusBadge';
 import { useCachedSchedules } from 'loot-core/src/client/data-hooks/schedules';
 import { getScheduledAmount } from 'loot-core/src/shared/schedules';
 
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 let TABLE_BACKGROUND_COLOR = colors.n11;
 
 function getDisplayValue(obj, name) {
@@ -520,6 +523,7 @@ function CellWithScheduleIcon({ scheduleId, children }) {
 }
 
 export const Transaction = React.memo(function Transaction(props) {
+
   let {
     transaction: originalTransaction,
     editing,
@@ -578,6 +582,8 @@ export const Transaction = React.memo(function Transaction(props) {
       if (
         name === 'category'
       ) {
+
+        let addRule = true;
         console.log(`category changed to ${value}`);
 
         const rule = {
@@ -594,6 +600,10 @@ export const Transaction = React.memo(function Transaction(props) {
 
               console.log(result);
 
+              // if(result.length === 0){
+              //   addRule = true;
+              // }
+
               if (result.length > 0) {
                 // get any rules that set the same category
                 let rules = new Set();
@@ -603,36 +613,63 @@ export const Transaction = React.memo(function Transaction(props) {
                     rules.add(rule);
                   }
                 });
+
                 // return if there is a rule that sets the selected category
                 if (rules.size > 0) {
                   console.log('already set by a rule');
                   console.log(rules);
-                  return;
+                  addRule = false;
                 }
 
+                // let settingRules = new Set();
                 // check if a rule sets another category, to prompt for update
                 result.forEach((item) => {
                   console.log(item);
 
+                  // check rule action sets category
                   const filterDoe = item.actions.filter(action => action.op === 'set' && action.field === 'category');
 
                   if (filterDoe.length > 0) {
-                    console.log('other category set by rule');
-                    console.log(filterDoe);
+                    // settingRules.add(item);
+
                     // if only 1 prompt to open edit rule
 
+
                     //if > 1 prompt to open manage rules filtered to the rules
+                    addRule = false;
+                    toast("Another rule already categorises this payee, click to update", {
+                      position: "bottom-right",
+                      autoClose: 5000,
+                      hideProgressBar: true,
+                      closeOnClick: true,
+                      pauseOnHover: true,
+                      draggable: true,
+                      progress: undefined,
 
+                    });
+                    // toast('Hello Geeks 6',
+                    //   { position: toast.POSITION.BOTTOM_RIGHT })
+                    // addToast('test', { appearance: 'success' });
                     return;
-                  }
 
+                  }
                 });
+
+                // if (settingRules.size > 0) {
+                //   console.log('other category set by rule');
+                //   console.log(settingRules);
+                //   return;
+                // }
 
               }
 
+              console.log(addRule);
 
-              // let method = rule.id ? 'rule-update' : 'rule-add';
-              let { error, id: newId } = send('rule-add', rule);
+              if (addRule) {
+                // let method = rule.id ? 'rule-update' : 'rule-add';
+                let { error, id: newId } = send('rule-add', rule);
+
+              }
 
 
             }
@@ -1427,6 +1464,7 @@ class TransactionTable_ extends React.Component {
           onCreatePayee={this.props.onCreatePayee}
           onToggleSplit={this.props.onToggleSplit}
         />
+
       </>
     );
   };
@@ -1524,7 +1562,9 @@ class TransactionTable_ extends React.Component {
             />
           )}
         </View>
+        <ToastContainer />
       </View>
+
     );
   }
 }
@@ -1868,7 +1908,7 @@ export let TransactionTable = React.forwardRef((props, ref) => {
   );
 
   return (
-    // eslint-disable-next-line
+    /* eslint-disable */
     <TransactionTable_
       tableRef={mergedRef}
       {...props}
@@ -1890,5 +1930,6 @@ export let TransactionTable = React.forwardRef((props, ref) => {
       tableNavigator={tableNavigator}
       newNavigator={newNavigator}
     />
+    /* eslint-disable */
   );
 });
