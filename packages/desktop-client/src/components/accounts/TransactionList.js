@@ -43,7 +43,7 @@ const uuid = require('loot-core/src/platform/uuid');
 async function saveDiff(diff) {
   let remoteUpdates = await send('transactions-batch-update', {
     ...diff,
-    learnCategories: true
+    learnCategories: false
   });
   if (remoteUpdates.length > 0) {
     return { updates: remoteUpdates };
