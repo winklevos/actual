@@ -15,6 +15,8 @@ import theme from './chart-theme';
 import Container from './Container';
 import DateRange from './DateRange';
 import { simpleCashFlow } from './graphs/cash-flow-spreadsheet';
+import categorySpendSpreadsheet from './graphs/category-spend-spreadsheet';
+import CategorySpendGraph from './graphs/CategorySpendGraph';
 import netWorthSpreadsheet from './graphs/net-worth-spreadsheet';
 import NetWorthGraph from './graphs/NetWorthGraph';
 import Tooltip from './Tooltip';
@@ -57,6 +59,65 @@ function Card({ flex, to, style, children }) {
     );
   }
   return content;
+}
+
+function CategorySpendCard({ accounts }) {
+  const end = monthUtils.currentMonth();
+  const start = monthUtils.subMonths(end, 5);
+
+  const data = useReport(
+    'category_spend',
+    useArgsMemo(categorySpendSpreadsheet)(start, end, accounts)
+  );
+
+  if (!data) {
+    return null;
+  }
+
+  return (
+    <Card
+      flex={2}
+      to="/reports/category-spend"
+      style={[
+        {
+          width: 300,
+          height: 300
+        }
+      ]}
+    >
+      <View style={{ flex: 1 }}>
+        <View style={{ flexDirection: 'row', padding: 20 }}>
+          <View style={{ flex: 1 }}>
+            <Block
+              style={[styles.mediumText, { fontWeight: 500, marginBottom: 5 }]}
+            >
+              Category Spend
+            </Block>
+            {/* <DateRange start={start} end={end} /> */}
+          </View>
+          {/* <View style={{ textAlign: 'right' }}>
+            <Block
+              style={[styles.mediumText, { fontWeight: 500, marginBottom: 5 }]}
+            >
+              {integerToCurrency(data.categorySpend)}
+            </Block>
+            <Change
+              amount={data.totalChange}
+              style={{ color: colors.n6, fontWeight: 300 }}
+            />
+          </View> */}
+        </View>
+
+        <CategorySpendGraph
+          start={start}
+          end={end}
+          graphData={data.graphData}
+          compact={false}
+          style={{ height: 'auto', flex: 1 }}
+        />
+      </View>
+    </Card>
+  );
 }
 
 function NetWorthCard({ accounts }) {
@@ -245,6 +306,7 @@ function Overview({ accounts }) {
           flexDirection: 'row'
         }}
       >
+        <CategorySpendCard accounts={accounts} />
         <Card
           style={[
             {

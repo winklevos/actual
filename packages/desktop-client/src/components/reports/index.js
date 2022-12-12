@@ -4,6 +4,7 @@ import { Route } from 'react-router-dom';
 import { View } from 'loot-design/src/components/common';
 
 import CashFlow from './CashFlow';
+import CategorySpend from './CategorySpend';
 import NetWorth from './NetWorth';
 import Overview from './Overview';
 
@@ -13,6 +14,7 @@ class Reports extends React.Component {
       <View style={{ flex: 1 }}>
         <Route path="/reports" exact component={Overview} />
         <Route path="/reports/net-worth" exact component={NetWorth} />
+        <Route path="/reports/category-spend" exact component={CategorySpend} />
         <Route path="/reports/cash-flow" exact component={CashFlow} />
       </View>
     );
