@@ -28,7 +28,7 @@ __metadata:
   dependencies:
     "@actual-app/api": "*"
     adm-zip: ^0.5.9
-    date-fns: 2.0.0-alpha.27
+    date-fns: ^2.29.3
     slash: 3.0.0
     uuid: 3.3.2
   bin:
@@ -6561,6 +6561,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"classnames@npm:^2.2.6":
+  version: 2.3.2
+  resolution: "classnames@npm:2.3.2"
+  checksum: 2c62199789618d95545c872787137262e741f9db13328e216b093eea91c85ef2bfb152c1f9e63027204e2559a006a92eb74147d46c800a9f96297ae1d9f96f4e
+  languageName: node
+  linkType: hard
+
 "clean-css@npm:4.2.x":
   version: 4.2.4
   resolution: "clean-css@npm:4.2.4"
@@ -8110,6 +8117,13 @@ __metadata:
   version: 2.0.0-alpha.27
   resolution: "date-fns@npm:2.0.0-alpha.27"
   checksum: 56228240ae558a0d0a5c19b59a748216837966fd231a5d736aac3eba6527954e2cb5579cae05a48a43f5b1361bbbd7008c515697792bcdfb714122882ff73298
+  languageName: node
+  linkType: hard
+
+"date-fns@npm:^2.29.3":
+  version: 2.29.3
+  resolution: "date-fns@npm:2.29.3"
+  checksum: e01cf5b62af04e05dfff921bb9c9933310ed0e1ae9a81eb8653452e64dc841acf7f6e01e1a5ae5644d0337e9a7f936175fd2cb6819dc122fdd9c5e86c56be484
   languageName: node
   linkType: hard
 
@@ -14664,7 +14678,7 @@ jest-snapshot@test:
     csv-parse: ^4.10.1
     csv-stringify: ^5.3.6
     damerau-levenshtein: ^1.0.4
-    date-fns: 2.0.0-alpha.27
+    date-fns: ^2.29.3
     deep-equal: ^2.0.5
     eslint: 5.6.0
     eslint-plugin-import: ^2.26.0
@@ -14683,12 +14697,14 @@ jest-snapshot@test:
     mitt: ^2.1.0
     mock-require: ^3.0.2
     mockdate: ^3.0.5
+    multiselect-react-dropdown: ^2.0.25
     murmurhash: ^0.0.2
     node-fetch: ^1.6.3
     node-libofx: "*"
     npm-run-all: ^4.1.3
     perf-deets: ^1.0.15
     prettier: ^1.19.1
+    react-date-range: ^1.4.0
     regenerator-runtime: ^0.13.7
     sanitize-filename: ^1.6.1
     search-query-parser: ^1.3.0
@@ -14718,7 +14734,7 @@ jest-snapshot@test:
     animejs: ^2.2.0
     camelcase: ^5.0.0
     chroma-js: ^1.3.3
-    date-fns: 2.0.0-alpha.27
+    date-fns: ^2.29.3
     downshift: 1.31.16
     eslint: 5.6.0
     eslint-plugin-prettier: ^3.1.4
@@ -15929,6 +15945,15 @@ jest-snapshot@test:
     arrify: ^1.0.1
     minimatch: ^3.0.4
   checksum: 0929c225a8f690e6f3d3aab724c3dab21136cccb5174844104903826ef93740e0a2965062b4943ab1894b66392592f18fca17d3294614a74de0443dfe4a24a03
+  languageName: node
+  linkType: hard
+
+"multiselect-react-dropdown@npm:^2.0.25":
+  version: 2.0.25
+  resolution: "multiselect-react-dropdown@npm:2.0.25"
+  peerDependencies:
+    react: ^16.7.0 || ^17.0.0 || ^18.0.0
+  checksum: 1dbc249ef27776a39188fe79cbf250718e95229493ec42cfae136f930a1dccc35b046ccd3f16b2f405f3fae92247e095748bf819ffb5d7927d059e0090e4d3de
   languageName: node
   linkType: hard
 
@@ -18615,6 +18640,17 @@ jest-snapshot@test:
   languageName: node
   linkType: hard
 
+"prop-types@npm:15, prop-types@npm:^15.5.10, prop-types@npm:^15.5.8, prop-types@npm:^15.6.0, prop-types@npm:^15.6.1, prop-types@npm:^15.6.2, prop-types@npm:^15.7.2":
+  version: 15.8.1
+  resolution: "prop-types@npm:15.8.1"
+  dependencies:
+    loose-envify: ^1.4.0
+    object-assign: ^4.1.1
+    react-is: ^16.13.1
+  checksum: c056d3f1c057cb7ff8344c645450e14f088a915d078dcda795041765047fa080d38e5d626560ccaac94a4e16e3aa15f3557c1a9a8d1174530955e992c675e459
+  languageName: node
+  linkType: hard
+
 "prop-types@npm:15.6.0":
   version: 15.6.0
   resolution: "prop-types@npm:15.6.0"
@@ -18623,17 +18659,6 @@ jest-snapshot@test:
     loose-envify: ^1.3.1
     object-assign: ^4.1.1
   checksum: 77c1f297fdd3b5eaba70aed24429a2d83881216626b6d244cf189256b6913217fc35bf38947f5b9e190a017d49f0d121d8f202f67cb9ec43c0c78b00039725c4
-  languageName: node
-  linkType: hard
-
-"prop-types@npm:^15.5.10, prop-types@npm:^15.5.8, prop-types@npm:^15.6.0, prop-types@npm:^15.6.1, prop-types@npm:^15.6.2, prop-types@npm:^15.7.2":
-  version: 15.8.1
-  resolution: "prop-types@npm:15.8.1"
-  dependencies:
-    loose-envify: ^1.4.0
-    object-assign: ^4.1.1
-    react-is: ^16.13.1
-  checksum: c056d3f1c057cb7ff8344c645450e14f088a915d078dcda795041765047fa080d38e5d626560ccaac94a4e16e3aa15f3557c1a9a8d1174530955e992c675e459
   languageName: node
   linkType: hard
 
@@ -18982,6 +19007,21 @@ jest-snapshot@test:
   languageName: node
   linkType: hard
 
+"react-date-range@npm:^1.4.0":
+  version: 1.4.0
+  resolution: "react-date-range@npm:1.4.0"
+  dependencies:
+    classnames: ^2.2.6
+    prop-types: ^15.7.2
+    react-list: ^0.8.13
+    shallow-equal: ^1.2.1
+  peerDependencies:
+    date-fns: 2.0.0-alpha.7 || >=2.0.0
+    react: ^0.14 || ^15.0.0-rc || >=15.0
+  checksum: ea26bcc268aef2045fc89c1f15148d2578a83712aedcced401da91e8bb613d929264ee71e6c5b4783147c07a175b14a0264c3cea01749a8414f7d9eb09a43b5a
+  languageName: node
+  linkType: hard
+
 "react-dev-utils@npm:^12.0.1":
   version: 12.0.1
   resolution: "react-dev-utils@npm:12.0.1"
@@ -19128,6 +19168,17 @@ jest-snapshot@test:
   version: 3.0.4
   resolution: "react-lifecycles-compat@npm:3.0.4"
   checksum: a904b0fc0a8eeb15a148c9feb7bc17cec7ef96e71188280061fc340043fd6d8ee3ff233381f0e8f95c1cf926210b2c4a31f38182c8f35ac55057e453d6df204f
+  languageName: node
+  linkType: hard
+
+"react-list@npm:^0.8.13":
+  version: 0.8.17
+  resolution: "react-list@npm:0.8.17"
+  dependencies:
+    prop-types: 15
+  peerDependencies:
+    react: 0.14 || 15 - 18
+  checksum: ab73693e36e33046e0fbf4aa8046433bc5dd146f06ec9ee273c78149f8f9c093d85f65705c42779d927fc8b5b8826eb3ddb21171830d34197c4f690313eb89d7
   languageName: node
   linkType: hard
 
@@ -20760,7 +20811,7 @@ jest-snapshot@test:
   languageName: node
   linkType: hard
 
-"shallow-equal@npm:^1.0.0":
+"shallow-equal@npm:^1.0.0, shallow-equal@npm:^1.2.1":
   version: 1.2.1
   resolution: "shallow-equal@npm:1.2.1"
   checksum: 4f1645cc516e7754c4438db687e1da439a5f29a7dba2ba90c5f88e5708aeb17bc4355ba45cad805b0e95dc898e37d8bf6d77d854919c7512f89939986cff8cd1
