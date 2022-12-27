@@ -10,6 +10,8 @@ import {
 import { styles } from 'loot-design/src/style';
 import ArrowLeft from 'loot-design/src/svg/v1/ArrowLeft';
 
+import Filters from './filters';
+
 function validateStart(allMonths, start, end) {
   const earliest = allMonths[allMonths.length - 1].name;
   if (end < start) {
@@ -141,6 +143,8 @@ function Header({ title, start, end, show1Month, allMonths, onChangeDates }) {
           All Time
         </Button>
       </View>
+
+      <Filters></Filters>
     </View>
   );
 }
