@@ -543,6 +543,18 @@ const compileFunction = saveStack('function', (state, func) => {
 
   switch (name) {
     // aggregate functions
+    case '$min': {
+      validateArgLength(args, 1);
+      let [arg1] = valArray(state, args, ['date', 'integer', 'float']);
+      return typed(`MIN(${arg1})`);
+    }
+
+    case '$max': {
+      validateArgLength(args, 1);
+      let [arg1] = valArray(state, args, ['date', 'integer', 'float']);
+      return typed(`MAX(${arg1})`);
+    }
+
     case '$sum': {
       validateArgLength(args, 1);
       let [arg1] = valArray(state, args, ['float']);
