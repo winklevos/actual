@@ -1,7 +1,7 @@
 // This defines the component with filter UI
 
 // import { useState, React } from 'react';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   DateRangePicker,
   createStaticRanges,
@@ -61,19 +61,6 @@ const defineds = {
   // endOflastYear: endOfYear(addYears(new Date(), -))
 };
 
-function getMinDate() {
-  let data = runQuery(q('transactions').calculate({ $min: '$date' })).then(
-    ({ data }) => data
-  );
-
-  return data.then(() => {});
-  return new Date(
-    String(data).substring(0, 4),
-    String(data).substring(5, 6),
-    String(data).substring(7, 8)
-  );
-}
-
 const sideBarOptions = () => {
   const customDateObjects = [
     {
@@ -113,22 +100,22 @@ function onSelect(selectedList, selectedItem) {
 
 function onRemove(selectedList, removedItem) {
   console.log(removedItem);
-  // selectionRange = removedItem;
 }
 
 function Filters() {
-  const [state, setState] = useState([
-    {
-      startDate: addDays(new Date(), -1),
-      endDate: new Date(),
-      key: 'selection'
-    }
-  ]);
+  const [state, setState] = useState({
+    minDate: addYears(new Date(), -10),
+    ranges: [
+      {
+        startDate: addDays(new Date(), -1),
+        endDate: new Date(),
+        key: 'selection'
+      }
+    ],
+    filters: {}
+  });
 
   console.log(state);
-  console.log(getMinDate());
-
-  const minDate = getMinDate();
 
   const sideBar = sideBarOptions();
   const staticRanges = [
@@ -136,10 +123,27 @@ function Filters() {
     ...createStaticRanges(sideBar)
   ];
 
+  function getMinDate() {
+    runQuery(q('transactions').calculate({ $min: '$date' })).then(result => {
+      setState({
+        ...state,
+        minDate: new Date(
+          String(result.data).substring(0, 4),
+          String(result.data).substring(5, 6),
+          String(result.data).substring(7, 8)
+        )
+      });
+    });
+  }
+
   function handleSelect(ranges) {
     console.log(ranges);
-    setState([ranges.selection]);
+    setState({ ...state, ranges: [ranges.selection] });
   }
+
+  useEffect(() => {
+    getMinDate();
+  }, []);
 
   return (
     <View
@@ -159,10 +163,10 @@ function Filters() {
         <DateRangePicker
           showSelectionPreview={true}
           months={2}
-          minDate={minDate}
+          minDate={state.minDate}
           direction="horizontal"
           showMonthAndYearPickers={true}
-          ranges={state}
+          ranges={state.ranges}
           staticRanges={staticRanges}
           onChange={handleSelect}
         />
