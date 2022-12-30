@@ -94,14 +94,6 @@ function getAccountOptions() {
 
 let filterSelections = {};
 
-function onSelect(selectedList, selectedItem) {
-  console.log(selectedItem);
-}
-
-function onRemove(selectedList, removedItem) {
-  console.log(removedItem);
-}
-
 function Filters() {
   const [state, setState] = useState({
     minDate: addYears(new Date(), -10),
@@ -116,7 +108,7 @@ function Filters() {
       accounts: [],
       categoryGroups: [],
       categories: [],
-      tags: [],
+      tags: []
     }
   });
 
@@ -127,6 +119,18 @@ function Filters() {
     // ...defaultStaticRanges,
     ...createStaticRanges(sideBar)
   ];
+
+  function onRemove(selectedList, removedItem) {
+    console.log(selectedList);
+  }
+
+  function onSelect(selectedList, selectedItem, selector) {
+    console.log(selectedList);
+    setState({
+      ...state,
+      filters: selectedList
+    });
+  }
 
   function getMinDate() {
     runQuery(q('transactions').calculate({ $min: '$date' })).then(result => {
@@ -169,6 +173,7 @@ function Filters() {
           showSelectionPreview={true}
           months={2}
           minDate={state.minDate}
+          maxDate={addDays(new Date(), 90)}
           direction="horizontal"
           showMonthAndYearPickers={true}
           ranges={state.ranges}
