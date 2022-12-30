@@ -85,18 +85,27 @@ function accountSelect(accounts) {
   console.log(accounts);
 }
 
-function getAccountOptions() {
-  return [
-    { name: 'Option 1️⃣', id: 1 },
-    { name: 'Option 2️⃣', id: 2 }
-  ];
-}
+// function getAccountOptions() {
+//   return [
+//     { name: 'Option 1️⃣', id: 1 },
+//     { name: 'Option 2️⃣', id: 2 }
+//   ];
+// }
+
+// function getCategoryOptions() {
+//   return [
+//     { name: 'Option 1️⃣', id: 1 },
+//     { name: 'Option 2️⃣', id: 2 }
+//   ];
+// }
 
 let filterSelections = {};
 
 function Filters() {
   const [state, setState] = useState({
     minDate: addYears(new Date(), -10),
+    accounts: [],
+    categories: [],
     ranges: [
       {
         startDate: addDays(new Date(), -1),
@@ -145,6 +154,26 @@ function Filters() {
     });
   }
 
+  function getAccountOptions() {
+    runQuery(q('accounts').select('*')).then(result => {
+      console.log(result.data);
+      setState({
+        ...state,
+        accounts: result.data
+      });
+    });
+  }
+
+  function getCategoryOptions() {
+    runQuery(q('categories').select('*')).then(result => {
+      console.log(result.data);
+      setState({
+        ...state,
+        categories: result.data
+      });
+    });
+  }
+
   function handleSelect(ranges) {
     console.log(ranges);
     setState({ ...state, ranges: [ranges.selection] });
@@ -152,6 +181,8 @@ function Filters() {
 
   useEffect(() => {
     getMinDate();
+    getAccountOptions();
+    getCategoryOptions();
   }, []);
 
   return (
@@ -180,22 +211,10 @@ function Filters() {
           staticRanges={staticRanges}
           onChange={handleSelect}
         />
-        <Select
-          style={{ flex: 0, backgroundColor: 'white' }}
-          onChange={accountSelect}
-          value="all"
-        >
-          <option key="all" value="all">
-            All
-          </option>
-          <option key="acc1" value="acc1">
-            acc1
-          </option>
-        </Select>
 
         <Multiselect
           showCheckbox={true}
-          options={getAccountOptions()} // Options to display in the dropdown
+          options={state.accounts} // Options to display in the dropdown
           // selectedValues={[1]} // Preselected value to persist in dropdown
           onSelect={onSelect} // Function will trigger on select event
           onRemove={onRemove} // Function will trigger on remove event
@@ -204,7 +223,7 @@ function Filters() {
 
         <Multiselect
           showCheckbox={true}
-          options={getAccountOptions()} // Options to display in the dropdown
+          options={state.categories} // Options to display in the dropdown
           // selectedValues={[1]} // Preselected value to persist in dropdown
           onSelect={onSelect} // Function will trigger on select event
           onRemove={onRemove} // Function will trigger on remove event
