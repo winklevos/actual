@@ -112,7 +112,12 @@ function Filters() {
         key: 'selection'
       }
     ],
-    filters: {}
+    filters: {
+      accounts: [],
+      categoryGroups: [],
+      categories: [],
+      tags: [],
+    }
   });
 
   console.log(state);
