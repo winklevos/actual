@@ -65,9 +65,37 @@ const defineds = {
 const sideBarOptions = () => {
   const customDateObjects = [
     {
-      label: 'Lifetime',
+      label: 'All Time',
       range: () => ({
         startDate: defineds.startOfToday,
+        endDate: defineds.endOfToday
+      })
+    },
+    {
+      label: 'Last 6 Months',
+      range: () => ({
+        startDate: defineds.startOf5Year,
+        endDate: defineds.endOfToday
+      })
+    },
+    {
+      label: 'Last Year',
+      range: () => ({
+        startDate: defineds.startOf5Year,
+        endDate: defineds.endOfToday
+      })
+    },
+    {
+      label: 'Year to Date',
+      range: () => ({
+        startDate: defineds.startOf5Year,
+        endDate: defineds.endOfToday
+      })
+    },
+    {
+      label: 'Last 3 Years',
+      range: () => ({
+        startDate: defineds.startOf5Year,
         endDate: defineds.endOfToday
       })
     },
@@ -257,6 +285,17 @@ function Filters() {
           displayValue="name" // Property name to display in the dropdown options
         />
       </div>
+      {/* <div style={{ margin: 7 }}>
+        <Multiselect
+          style={{ padding: 10 }}
+          showCheckbox={true}
+          options={state.categories} // Options to display in the dropdown
+          // selectedValues={[1]} // Preselected value to persist in dropdown
+          // onSelect={onCategorySelect} // Function will trigger on select event
+          // onRemove={onRemove} // Function will trigger on remove event
+          displayValue="name" // Property name to display in the dropdown options
+        />
+      </div> */}
     </View>
   );
 }
