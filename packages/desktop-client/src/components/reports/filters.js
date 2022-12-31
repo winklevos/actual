@@ -19,7 +19,8 @@ import {
   endOfWeek,
   startOfYear,
   endOfYear,
-  addYears
+  addYears,
+  format
 } from 'date-fns';
 import Multiselect from 'multiselect-react-dropdown';
 
@@ -84,6 +85,7 @@ const sideBarOptions = () => {
 function Filters() {
   const [state, setState] = useState({
     minDate: addYears(new Date(), -10),
+    showCal: false,
     accounts: [],
     categories: [],
     ranges: [
@@ -167,6 +169,10 @@ function Filters() {
     getCategoryOptions();
   }, []);
 
+  function onCalClick() {
+    setState(prevState => ({ ...prevState, showCal: true }));
+  }
+
   return (
     <View
       style={{
@@ -176,17 +182,56 @@ function Filters() {
       }}
     >
       <div style={{ margin: 7 }}>
-        <DateRangePicker
-          showSelectionPreview={true}
-          months={1}
-          minDate={state.minDate}
-          maxDate={addDays(new Date(), 90)}
-          direction="horizontal"
-          showMonthAndYearPickers={true}
-          ranges={state.ranges}
-          staticRanges={staticRanges}
-          onChange={handleSelect}
-        />
+        <div>
+          <div class="multiselect-container multiSelectContainer  ">
+            <div class="search-wrapper searchWrapper ">
+              <input
+                id="calendar_input"
+                class="searchBox"
+                type="text"
+                autoComplete="off"
+                onClick={onCalClick}
+                value={
+                  format(state.ranges[0].startDate, 'dd MMM yyyy') +
+                  ' - ' +
+                  format(state.ranges[0].endDate, 'dd MMM yyyy')
+                }
+              ></input>
+            </div>
+            {state.showCal ? (
+              <div
+                id="calSelector"
+                style={{
+                  marginTop: 1,
+                  border: '1px solid #ccc',
+                  borderRadius: 4,
+                  position: 'absolute',
+                  zIndex: 10
+                }}
+              >
+                <DateRangePicker
+                  showSelectionPreview={true}
+                  months={1}
+                  minDate={state.minDate}
+                  maxDate={addDays(new Date(), 90)}
+                  direction="horizontal"
+                  showMonthAndYearPickers={true}
+                  ranges={state.ranges}
+                  staticRanges={staticRanges}
+                  onChange={handleSelect}
+                />
+                <Button
+                  style={{ marginLeft: 15 }}
+                  onClick={() => {
+                    setState(prevState => ({ ...prevState, showCal: false }));
+                  }}
+                >
+                  Close
+                </Button>
+              </div>
+            ) : null}
+          </div>
+        </div>
       </div>
 
       <div style={{ margin: 7 }}>
