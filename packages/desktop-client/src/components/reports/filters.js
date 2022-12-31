@@ -32,7 +32,7 @@ import {
   ButtonLink
 } from 'loot-design/src/components/common';
 
-import { toDateRepr, fromDateReprToDay, runAll, index } from './util';
+// import { toDateRepr, fromDateReprToDay, runAll, index } from './util';
 
 import 'react-date-range/dist/styles.css'; // main style file
 import 'react-date-range/dist/theme/default.css'; // theme css file
@@ -81,26 +81,6 @@ const sideBarOptions = () => {
   return customDateObjects;
 };
 
-function accountSelect(accounts) {
-  console.log(accounts);
-}
-
-// function getAccountOptions() {
-//   return [
-//     { name: 'Option 1️⃣', id: 1 },
-//     { name: 'Option 2️⃣', id: 2 }
-//   ];
-// }
-
-// function getCategoryOptions() {
-//   return [
-//     { name: 'Option 1️⃣', id: 1 },
-//     { name: 'Option 2️⃣', id: 2 }
-//   ];
-// }
-
-let filterSelections = {};
-
 function Filters() {
   const [state, setState] = useState({
     minDate: addYears(new Date(), -10),
@@ -133,50 +113,52 @@ function Filters() {
     console.log(selectedList);
   }
 
-  function onSelect(selectedList, selectedItem, selector) {
+  function onAccountSelect(selectedList, selectedItem) {
     console.log(selectedList);
-    setState({
-      ...state,
-      filters: selectedList
-    });
+    setState(prevState => ({
+      ...prevState,
+      filters: { ...prevState.filters, accounts: selectedList }
+    }));
+  }
+
+  function onCategorySelect(selectedList, selectedItem) {
+    console.log(selectedList);
+    setState(prevState => ({
+      ...prevState,
+      filters: { ...prevState.filters, categories: selectedList }
+    }));
   }
 
   function getMinDate() {
     runQuery(q('transactions').calculate({ $min: '$date' })).then(result => {
-      setState({
-        ...state,
+      setState(prevState => ({
+        ...prevState,
         minDate: new Date(
           String(result.data).substring(0, 4),
           String(result.data).substring(5, 6),
           String(result.data).substring(7, 8)
         )
-      });
+      }));
     });
   }
 
   function getAccountOptions() {
     runQuery(q('accounts').select('*')).then(result => {
       console.log(result.data);
-      setState({
-        ...state,
-        accounts: result.data
-      });
+      setState(prevState => ({ ...prevState, accounts: result.data }));
     });
   }
 
   function getCategoryOptions() {
     runQuery(q('categories').select('*')).then(result => {
       console.log(result.data);
-      setState({
-        ...state,
-        categories: result.data
-      });
+      setState(prevState => ({ ...prevState, categories: result.data }));
     });
   }
 
   function handleSelect(ranges) {
     console.log(ranges);
-    setState({ ...state, ranges: [ranges.selection] });
+    setState(prevState => ({ ...prevState, ranges: [ranges.selection] }));
   }
 
   useEffect(() => {
@@ -188,21 +170,15 @@ function Filters() {
   return (
     <View
       style={{
-        padding: 20,
-        paddingTop: 0,
-        flexShrink: 0
+        flexDirection: 'row',
+        // alignItems: 'center',
+        marginTop: 15
       }}
     >
-      <View
-        style={{
-          flexDirection: 'row',
-          alignItems: 'center',
-          marginTop: 15
-        }}
-      >
+      <div style={{ margin: 7 }}>
         <DateRangePicker
           showSelectionPreview={true}
-          months={2}
+          months={1}
           minDate={state.minDate}
           maxDate={addDays(new Date(), 90)}
           direction="horizontal"
@@ -211,25 +187,31 @@ function Filters() {
           staticRanges={staticRanges}
           onChange={handleSelect}
         />
+      </div>
 
+      <div style={{ margin: 7 }}>
         <Multiselect
+          style={{ padding: 10 }}
           showCheckbox={true}
           options={state.accounts} // Options to display in the dropdown
           // selectedValues={[1]} // Preselected value to persist in dropdown
-          onSelect={onSelect} // Function will trigger on select event
+          onSelect={onAccountSelect} // Function will trigger on select event
           onRemove={onRemove} // Function will trigger on remove event
           displayValue="name" // Property name to display in the dropdown options
         />
+      </div>
 
+      <div style={{ margin: 7 }}>
         <Multiselect
+          style={{ padding: 10 }}
           showCheckbox={true}
           options={state.categories} // Options to display in the dropdown
           // selectedValues={[1]} // Preselected value to persist in dropdown
-          onSelect={onSelect} // Function will trigger on select event
+          onSelect={onCategorySelect} // Function will trigger on select event
           onRemove={onRemove} // Function will trigger on remove event
           displayValue="name" // Property name to display in the dropdown options
         />
-      </View>
+      </div>
     </View>
   );
 }
