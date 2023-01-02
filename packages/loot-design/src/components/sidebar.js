@@ -551,6 +551,11 @@ export function Sidebar({
         to="/reports"
       />
       <Item
+        title="Reports V2"
+        icon={<Reports width={15} height={15} style={{ color: 'inherit' }} />}
+        to="/reportsV2"
+      />
+      <Item
         title="Schedules"
         icon={
           <CalendarIcon width={15} height={15} style={{ color: 'inherit' }} />

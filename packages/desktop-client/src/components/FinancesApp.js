@@ -28,6 +28,7 @@ import Modals from './Modals';
 import Notifications from './Notifications';
 import { PageTypeProvider } from './Page';
 import Reports from './reports';
+import ReportsV2 from './reportsV2';
 import Schedules from './schedules';
 import DiscoverSchedules from './schedules/DiscoverSchedules';
 import EditSchedule from './schedules/EditSchedule';
@@ -36,6 +37,7 @@ import PostsOfflineNotification from './schedules/PostsOfflineNotification';
 import Settings from './Settings';
 import Titlebar, { TitlebarProvider } from './Titlebar';
 import FixSplitsTool from './tools/FixSplitsTool';
+
 // import Debugger from './Debugger';
 
 function URLBar() {
@@ -85,6 +87,7 @@ function Routes({ location }) {
         <Route path="/" exact render={() => <Redirect to="/budget" />} />
 
         <PageRoute path="/reports" component={Reports} />
+        <PageRoute path="/reportsV2" component={ReportsV2} />
         <PageRoute path="/budget" component={Budget} />
 
         <Route path="/schedules" exact component={Schedules} />
