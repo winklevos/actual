@@ -27,33 +27,8 @@ const data = [
 
 export default function Pivot({ setLoading = () => {} }) {
   const [state, setState] = useState(null);
+  const [data, setData] = useState(null);
   const dispatch = useDispatch();
-
-  //   function makeQuery() {
-  //     // let query = q('transactions').raw('SELECT date FROM Transactions');
-  //     let query = q('transactions');
-  //     //   .groupBy(defaultReport.config.groupBy)
-  //     //   .select(defaultReport.config.aggregates);
-
-  //     // console.log(query);
-  //     return query;
-  //   }
-
-  //   async function loadRules() {
-  //     setLoading(true);
-
-  //     let loadedRules = null;
-  //     // if (payeeId) {
-  //     //   loadedRules = await send('payees-get-rules', {
-  //     //     id: payeeId
-  //     //   });
-  //     // } else {
-  //     // //   loadedRules = await send('rules-get');
-  //     // }
-
-  //     // setAllRules(loadedRules);
-  //     return loadedRules;
-  //   }
 
   useEffect(() => {
     async function run() {
@@ -62,13 +37,9 @@ export default function Pivot({ setLoading = () => {} }) {
       //     'SELECT * FROM transactions LIMIT 10'
       //   );
       let { data: rows } = await runQuery(
-        q('transactions').select([
-          '*',
-          'payee.name',
-          'account.name',
-          'category.name',
-          'category.parent'
-        ])
+        q('transactions')
+          .select(['*', 'payee.name', 'account.name', 'category.name'])
+          .limit(1000)
       );
       // q('transactions').filter('LEFT JOIN payees p ON t.payee = p.id').raw()
 
@@ -84,7 +55,7 @@ export default function Pivot({ setLoading = () => {} }) {
       //   .select('id')
       //   );
       console.log(rows);
-      setState(rows);
+      setData(rows);
       //   let ids = new Set(rows.map(r => r.id));
 
       //   let finalIds = [...selectedItems].filter(id => !ids.has(id));
@@ -118,8 +89,15 @@ export default function Pivot({ setLoading = () => {} }) {
     };
   }, []);
 
-  return state ? (
-    <PivotTableUI data={state} onChange={s => setState(s)} {...state} />
+  return data ? (
+    <PivotTableUI
+      data={data}
+      onChange={s => {
+        setState(s);
+        console.log(s);
+      }}
+      {...state}
+    />
   ) : (
     <h1>loading..</h1>
   );
