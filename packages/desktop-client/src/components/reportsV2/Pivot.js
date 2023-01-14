@@ -63,7 +63,7 @@ function generateAggs(arry = []) {
 }
 
 function unpack(rows, key) {
-  return rows.map(function(row) {
+  return rows.map(function (row) {
     return row[key];
   });
 }
