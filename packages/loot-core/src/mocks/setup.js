@@ -6,21 +6,21 @@ import {
   enableGlobalMutations,
   disableGlobalMutations
 } from '../server/mutators';
+import { setServer } from '../server/server-config';
 import * as sheet from '../server/sheet';
 import { setSyncingMode } from '../server/sync';
-import * as tracking from '../server/tracking/events';
 import { updateVersion } from '../server/update';
 import { resetTracer, tracer } from '../shared/test-helpers';
 
 jest.mock('../server/post');
 
-// No need to run any of the tracking code in tests
-tracking.toggle(false);
-
 const nativeFs = require('fs');
 
 // By default, syncing is disabled
 setSyncingMode('disabled');
+
+// Set a mock url for the testing server
+setServer('https://test.env');
 
 process.on('unhandledRejection', reason => {
   console.log('REJECTION', reason);
@@ -56,7 +56,7 @@ global.randomId = () => {
   return 'id' + _id++;
 };
 
-global.getDatabaseDump = async function(tables) {
+global.getDatabaseDump = async function (tables) {
   if (!tables) {
     const rows = await sqlite.runQuery(
       db.getDatabase(),
@@ -106,7 +106,7 @@ global.getDatabaseDump = async function(tables) {
 // where to find the webassembly file
 // process.env.PUBLIC_URL = __dirname + '/../../../../node_modules/sql.js/dist/';
 
-global.emptyDatabase = function(avoidUpdate) {
+global.emptyDatabase = function (avoidUpdate) {
   return async () => {
     let path = ':memory:';
     // let path = `/tmp/foo-${Math.random()}.sqlite`;
