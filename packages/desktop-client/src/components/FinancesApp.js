@@ -44,6 +44,7 @@ import Modals from './Modals';
 import Notifications from './Notifications';
 import { PageTypeProvider } from './Page';
 import { ManagePayeesPage } from './payees/ManagePayeesPage';
+import Pivot from './pivots';
 import Reports from './reports';
 // import ReportsV2 from './reportsV2';
 import Schedules from './schedules';
@@ -84,6 +85,7 @@ function Routes({ isMobile, location }) {
         <Route path="/" exact render={() => <Redirect to="/budget" />} />
 
         <PageRoute path="/reports" component={Reports} />
+        <PageRoute path="/pivots" component={Pivot} />
         {/* <PageRoute path="/reportsV2" component={ReportsV2} /> */}
         <PageRoute
           path="/budget"

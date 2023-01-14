@@ -651,6 +651,7 @@ export function Sidebar({
       <View style={{ overflow: 'auto' }}>
         <Item title="Budget" Icon={Wallet} to="/budget" />
         <Item title="Reports" Icon={Reports} to="/reports" />
+        <Item title="Reports Pivot" Icon={Reports} to="/pivots" />
         {/* <Item
           title="Reports V2"
           icon={<Reports width={15} height={15} style={{ color: 'inherit' }} />}
