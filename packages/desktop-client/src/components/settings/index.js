@@ -14,6 +14,7 @@ import { withThemeColor } from 'loot-design/src/util/withThemeColor';
 
 import useServerVersion from '../../hooks/useServerVersion';
 import { isMobile } from '../../util';
+import AuthorizationCodeExample from '../oauth';
 import { Page } from '../Page';
 import EncryptionSettings from './Encryption';
 import ExportBudget from './Export';
@@ -98,7 +99,7 @@ function Settings({
               saveGlobalPrefs={this.props.saveGlobalPrefs}
             />
           )}
-
+          <AuthorizationCodeExample></AuthorizationCodeExample>
           <FormatSettings prefs={prefs} savePrefs={savePrefs} />
           <EncryptionSettings prefs={prefs} pushModal={pushModal} />
           <ExportBudget prefs={prefs} />

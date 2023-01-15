@@ -98,6 +98,7 @@
     "@react-stately/collections": "^3.4.3",
     "@react-stately/list": "^3.5.3",
     "inter-ui": "^3.19.3",
-    "react-router-dom-v5-compat": "^6.4.1"
+    "react-router-dom-v5-compat": "^6.4.1",
+    "react-simple-oauth2-login": "^0.5.4"
   }
 }
