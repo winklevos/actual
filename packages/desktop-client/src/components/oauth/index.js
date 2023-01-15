@@ -16,7 +16,7 @@ const authorizationUrl =
 const clientId = '54d6a677-6461-4eb1-8f9a-4e3bb7770d68';
 const redirectUri = 'http://localhost:3001/auth/redirect';
 const appServerUrl =
-  'https://login.microsoftonline.com/common/v2.0/oauth2/token';
+  'https://login.microsoftonline.com/consumers/v2.0/oauth2/token';
 const oauthServerUrl =
   'https://login.microsoftonline.com/consumers/oauth2/v2.0/';
 const scope = 'User.Read,Files.ReadWrite.AppFolder';
