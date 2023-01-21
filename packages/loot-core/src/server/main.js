@@ -485,6 +485,16 @@ handlers['payees-get-rule-counts'] = async function () {
   return payeeCounts;
 };
 
+handlers['payees-get-amounts'] = async function () {
+  let { data } = await aqlQuery(
+    q('transactions')
+      .filter({ category: null })
+      .groupBy(['payee'])
+      .select(['payee', { amount: { $sum: '$amount' } }])
+  );
+  return data || null;
+};
+
 handlers['payees-merge'] = mutator(async function ({ targetId, mergeIds }) {
   return withUndo(
     async () => {

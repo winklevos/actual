@@ -19,12 +19,19 @@ function ManagePayeesWithData({
 }) {
   let [payees, setPayees] = useState(initialPayees);
   let [ruleCounts, setRuleCounts] = useState({ value: new Map() });
+  let [payeeAmounts, setPayeeAmounts] = useState({ value: new Map() });
   let payeesRef = useRef();
 
   async function refetchRuleCounts() {
     let counts = await send('payees-get-rule-counts');
     counts = new Map(Object.entries(counts));
     setRuleCounts({ value: counts });
+  }
+
+  async function refetchPayeeAmounts() {
+    let counts = await send('payees-get-amounts');
+    counts = new Map(counts.map(obj => [obj.payee, obj.amount]));
+    setPayeeAmounts({ value: counts });
   }
 
   useEffect(() => {
@@ -40,6 +47,7 @@ function ManagePayeesWithData({
       }
 
       refetchRuleCounts();
+      refetchPayeeAmounts();
     }
     loadData();
 
@@ -118,6 +126,7 @@ function ManagePayeesWithData({
       modalProps={modalProps}
       payees={payees}
       ruleCounts={ruleCounts.value}
+      uncategorizedAmount={payeeAmounts.value}
       categoryGroups={categoryGroups}
       initialSelectedIds={initialSelectedIds}
       lastUndoState={lastUndoState}

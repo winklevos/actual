@@ -12,6 +12,7 @@ import Component from '@reactions/component';
 import memoizeOne from 'memoize-one';
 
 import { groupById } from 'loot-core/src/shared/util';
+import { integerToCurrency } from 'loot-core/src/shared/util';
 
 import { colors } from '../style';
 import Delete from '../svg/v0/Delete';
@@ -91,6 +92,7 @@ let Payee = React.memo(
     style,
     payee,
     ruleCount,
+    uncategorizedAmount,
     categoryGroups,
     selected,
     highlighted,
@@ -108,6 +110,8 @@ let Payee = React.memo(
     let dispatchSelected = useSelectedDispatch();
     let borderColor = selected ? colors.b8 : colors.border;
     let backgroundFocus = hovered || focusedField === 'select';
+
+    console.log(uncategorizedAmount);
 
     return (
       <Row
@@ -151,6 +155,22 @@ let Payee = React.memo(
           onExpose={() => onEdit(id, 'name')}
           inputProps={{ readOnly: !!payee.transfer_acct }}
         />
+        <Cell
+          name="uncategorized"
+          width="auto"
+          style={{ padding: '0 10px' }}
+          plain
+          exposed={focusedField === 'uncategorized'}
+        >
+          <Text style={{ paddingRight: 5 }}>
+            {uncategorizedAmount ? (
+              <>{integerToCurrency(uncategorizedAmount)} uncategorized</>
+            ) : (
+              <></>
+            )}
+          </Text>
+        </Cell>
+
         <RuleButton
           ruleCount={ruleCount}
           focused={focusedField === 'rule-count'}
@@ -169,6 +189,7 @@ const PayeeTable = React.forwardRef(
     {
       payees,
       ruleCounts,
+      uncategorizedAmount,
       navigator,
       categoryGroups,
       highlightedRows,
@@ -203,6 +224,7 @@ const PayeeTable = React.forwardRef(
               <Payee
                 payee={item}
                 ruleCount={ruleCounts.get(item.id) || 0}
+                uncategorizedAmount={uncategorizedAmount.get(item.id) || null}
                 categoryGroups={categoryGroups}
                 selected={selectedItems.has(item.id)}
                 highlighted={highlightedRows && highlightedRows.has(item.id)}
@@ -340,6 +362,7 @@ export const ManagePayees = React.forwardRef(
       modalProps,
       payees,
       ruleCounts,
+      uncategorizedAmount,
       categoryGroups,
       tableNavigatorOpts,
       initialSelectedIds,
@@ -356,6 +379,8 @@ export const ManagePayees = React.forwardRef(
     let table = useRef(null);
     let scrollTo = useRef(null);
     let resetAnimation = useRef(false);
+
+    console.log(uncategorizedAmount);
 
     let filteredPayees = useMemo(
       () =>
@@ -544,6 +569,7 @@ export const ManagePayees = React.forwardRef(
                 ref={table}
                 payees={filteredPayees}
                 ruleCounts={ruleCounts}
+                uncategorizedAmount={uncategorizedAmount}
                 categoryGroups={categoryGroups}
                 highlightedRows={highlightedRows}
                 navigator={tableNavigator}
