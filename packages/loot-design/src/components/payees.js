@@ -111,8 +111,6 @@ let Payee = React.memo(
     let borderColor = selected ? colors.b8 : colors.border;
     let backgroundFocus = hovered || focusedField === 'select';
 
-    console.log(uncategorizedAmount);
-
     return (
       <Row
         borderColor={borderColor}
@@ -379,8 +377,6 @@ export const ManagePayees = React.forwardRef(
     let table = useRef(null);
     let scrollTo = useRef(null);
     let resetAnimation = useRef(false);
-
-    console.log(uncategorizedAmount);
 
     let filteredPayees = useMemo(
       () =>

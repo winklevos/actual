@@ -488,7 +488,12 @@ handlers['payees-get-rule-counts'] = async function () {
 handlers['payees-get-amounts'] = async function () {
   let { data } = await aqlQuery(
     q('transactions')
-      .filter({ category: null })
+      .filter({
+        category: null,
+        tombstone: false,
+        transfer_id: null,
+        starting_balance_flag: false
+      })
       .groupBy(['payee'])
       .select(['payee', { amount: { $sum: '$amount' } }])
   );
