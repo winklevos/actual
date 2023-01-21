@@ -144,10 +144,17 @@ function ManagePayeesWithData({
             targetId,
             (ruleCounts.value.get(targetId) || 0) + count
           );
+
+          let updatedPayeeAmount = payeeAmounts.value.get(id) || 0;
+          payeeAmounts.value.set(
+            targetId,
+            (payeeAmounts.value.get(targetId) || 0) + updatedPayeeAmount
+          );
         });
 
         setPayees(result);
         setRuleCounts({ value: ruleCounts.value });
+        setPayeeAmounts({ value: payeeAmounts.value });
       }}
       onViewRules={onViewRules}
       onCreateRule={onCreateRule}
